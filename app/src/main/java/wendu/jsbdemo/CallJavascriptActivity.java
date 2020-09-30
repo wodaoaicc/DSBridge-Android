@@ -1,12 +1,12 @@
 package wendu.jsbdemo;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import androidx.appcompat.app.AppCompatActivity;
 import wendu.dsbridge.DWebView;
 import wendu.dsbridge.OnReturnValue;
 

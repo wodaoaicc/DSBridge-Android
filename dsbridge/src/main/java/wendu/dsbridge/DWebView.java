@@ -11,8 +11,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.annotation.Keep;
-import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -39,12 +37,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.annotation.Keep;
+import androidx.appcompat.app.AlertDialog;
 
 import static android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW;
 
@@ -81,7 +81,7 @@ public class DWebView extends WebView {
         @JavascriptInterface
         public String call(String methodName, String argStr) {
             String error = "Js bridge  called, but can't find a corresponded " +
-                    "JavascriptInterface object , please check your code!";
+                "JavascriptInterface object , please check your code!";
             String[] nameStr = parseNamespace(methodName.trim());
             methodName = nameStr[1];
             Object jsb = javaScriptNamespaceInterfaces.get(nameStr[0]);
@@ -120,7 +120,7 @@ public class DWebView extends WebView {
             boolean asyn = false;
             try {
                 method = cls.getMethod(methodName,
-                        new Class[]{Object.class, CompletionHandler.class});
+                    new Class[]{Object.class, CompletionHandler.class});
                 asyn = true;
             } catch (Exception e) {
                 try {
@@ -139,7 +139,7 @@ public class DWebView extends WebView {
             JavascriptInterface annotation = method.getAnnotation(JavascriptInterface.class);
             if (annotation == null) {
                 error = "Method " + methodName + " is not invoked, since  " +
-                        "it is not declared with JavascriptInterface annotation! ";
+                    "it is not declared with JavascriptInterface annotation! ";
                 PrintDebugInfo(error);
                 return ret.toString();
             }
@@ -301,7 +301,7 @@ public class DWebView extends WebView {
                     Method method = null;
                     try {
                         method = cls.getMethod(nameStr[1],
-                                new Class[]{Object.class, CompletionHandler.class});
+                            new Class[]{Object.class, CompletionHandler.class});
                         asyn = true;
                     } catch (Exception e) {
                         try {
@@ -329,7 +329,7 @@ public class DWebView extends WebView {
                     @Override
                     public void run() {
                         if (javascriptCloseWindowListener == null
-                                || javascriptCloseWindowListener.onClose()) {
+                            || javascriptCloseWindowListener.onClose()) {
                             Context context = getContext();
                             if (context instanceof Activity) {
                                 ((Activity) getContext()).onBackPressed();
@@ -463,7 +463,9 @@ public class DWebView extends WebView {
 
     private class CallInfo {
         public CallInfo(String handlerName, int id, Object[] args) {
-            if (args == null) args = new Object[0];
+            if (args == null) {
+                args = new Object[0];
+            }
             data = new JSONArray(Arrays.asList(args)).toString();
             callbackId = id;
             method = handlerName;
@@ -644,7 +646,7 @@ public class DWebView extends WebView {
                                       boolean isUserGesture, Message resultMsg) {
             if (webChromeClient != null) {
                 return webChromeClient.onCreateWindow(view, isDialog,
-                        isUserGesture, resultMsg);
+                    isUserGesture, resultMsg);
             }
             return super.onCreateWindow(view, isDialog, isUserGesture, resultMsg);
         }
@@ -680,18 +682,18 @@ public class DWebView extends WebView {
                 }
             }
             Dialog alertDialog = new AlertDialog.Builder(getContext()).
-                    setMessage(message).
-                    setCancelable(false).
-                    setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            if (alertBoxBlock) {
-                                result.confirm();
-                            }
+                setMessage(message).
+                setCancelable(false).
+                setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        if (alertBoxBlock) {
+                            result.confirm();
                         }
-                    })
-                    .create();
+                    }
+                })
+                .create();
             alertDialog.show();
             return true;
         }
@@ -718,10 +720,10 @@ public class DWebView extends WebView {
                     }
                 };
                 new AlertDialog.Builder(getContext())
-                        .setMessage(message)
-                        .setCancelable(false)
-                        .setPositiveButton(android.R.string.ok, listener)
-                        .setNegativeButton(android.R.string.cancel, listener).show();
+                    .setMessage(message)
+                    .setCancelable(false)
+                    .setPositiveButton(android.R.string.ok, listener)
+                    .setNegativeButton(android.R.string.cancel, listener).show();
                 return true;
 
             }
@@ -766,15 +768,15 @@ public class DWebView extends WebView {
                     }
                 };
                 new AlertDialog.Builder(getContext())
-                        .setTitle(message)
-                        .setView(editText)
-                        .setCancelable(false)
-                        .setPositiveButton(android.R.string.ok, listener)
-                        .setNegativeButton(android.R.string.cancel, listener)
-                        .show();
+                    .setTitle(message)
+                    .setView(editText)
+                    .setCancelable(false)
+                    .setPositiveButton(android.R.string.ok, listener)
+                    .setNegativeButton(android.R.string.cancel, listener)
+                    .show();
                 FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
                 int t = (int) (dpi * 16);
                 layoutParams.setMargins(t, 0, t, 0);
                 layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
@@ -801,10 +803,10 @@ public class DWebView extends WebView {
                                             WebStorage.QuotaUpdater quotaUpdater) {
             if (webChromeClient != null) {
                 webChromeClient.onExceededDatabaseQuota(url, databaseIdentifier, quota,
-                        estimatedDatabaseSize, totalQuota, quotaUpdater);
+                    estimatedDatabaseSize, totalQuota, quotaUpdater);
             } else {
                 super.onExceededDatabaseQuota(url, databaseIdentifier, quota,
-                        estimatedDatabaseSize, totalQuota, quotaUpdater);
+                    estimatedDatabaseSize, totalQuota, quotaUpdater);
             }
         }
 
@@ -921,7 +923,7 @@ public class DWebView extends WebView {
 
         File appCacheDir = new File(APP_CACHE_DIRNAME);
         File webviewCacheDir = new File(context.getCacheDir()
-                .getAbsolutePath() + "/webviewCache");
+            .getAbsolutePath() + "/webviewCache");
 
         if (webviewCacheDir.exists()) {
             deleteFile(webviewCacheDir);
